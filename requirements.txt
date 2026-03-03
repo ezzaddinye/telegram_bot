@@ -1,0 +1,14 @@
+# المتطلبات الأساسية
+telethon>=1.34.0
+python-dotenv>=1.0.0
+openai
+sqlite3
+asyncio
+logging
+
+# للحصول على API_ID و API_HASH:
+# 1. قم بزيارة https://my.telegram.org
+# 2. سجل الدخول بحسابك
+# 3. انتقل إلى "API development tools"
+# 4. أنشئ تطبيق جديداً
+# 5. انسخ API_ID و API_HASH
