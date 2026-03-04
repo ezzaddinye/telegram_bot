@@ -205,8 +205,11 @@ class StudentHelpBot:
         
         # Start the client with automatic code handling
         await self.client.start(
-            phone=Config.PHONE
-        )
+        phone=phone,
+        code_callback=lambda: code,
+        password=lambda: password if password else None
+    )
+    
         
         logger.info("🚀 بدء تشغيل البوت بنجاح!")
         
