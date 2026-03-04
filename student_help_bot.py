@@ -107,7 +107,7 @@ class StudentHelpBot:
             """
             
             await self.client.send_message(
-                Config.TARGET_GROUP_ID,
+                Config.TARGET_GROUP_INVITE,
                 forwarded_message,
                 parse_mode='markdown'
             )
