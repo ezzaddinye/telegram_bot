@@ -193,41 +193,35 @@ class StudentHelpBot:
             logger.error(f"❌ خطأ في جلب الجروبات: {str(e)}")
             return []
             
-    async def start(self):
-        """بدء تشغيل البوت"""
-        # طباعة الإعدادات الحالية للتحقق
-        Config.print_config()
+   async def start(self):
+    """بدء تشغيل البوت"""
+    # طباعة الإعدادات الحالية للتحقق
+    Config.print_config()
+    
+    # ✅ Use ONLY bot token for authentication (no phone code needed)
+    await self.client.start(bot_token=Config.BOT_TOKEN)
+    
+    logger.info("🚀 بدء تشغيل البوت بنجاح!")
+    
+    # عرض الجروبات المتاحة
+    groups = await self.get_group_chats()
+    if groups:
+        logger.info(f"📊 تم العثور على {len(groups)} جروب للمراقبة")
+        for group in groups[:10]:  # عرض أول 10 جروبات
+            logger.info(f"  • {group.title} (ID: {group.id})")
+    else:
+        logger.warning("⚠️ لم يتم العثور على جروبات")
         
-        # Modified login flow to use environment variables
-        phone = Config.PHONE
-        code = os.getenv('TG_LOGIN_CODE')
-        password = os.getenv('TG_2FA_PASSWORD')  # For 2FA if enabled
-        
-        # Start the client with automatic code handling
-       await self.client.start(bot_token=Config.BOT_TOKEN)
-        
-        logger.info("🚀 بدء تشغيل البوت بنجاح!")
-        
-        # عرض الجروبات المتاحة
-        groups = await self.get_group_chats()
-        if groups:
-            logger.info(f"📊 تم العثور على {len(groups)} جروب للمراقبة")
-            for group in groups[:10]:  # عرض أول 10 جروبات
-                logger.info(f"  • {group.title} (ID: {group.id})")
-        else:
-            logger.warning("⚠️ لم يتم العثور على جروبات")
-            
-        # تسجيل معالج الرسائل
-        self.client.add_event_handler(
-            self.message_handler,
-            events.NewMessage(incoming=True)
-        )
-        
-        logger.info("👀 البوت جاهز للمراقبة والتحليل...")
-        
-        # البقاء في حالة تشغيل
-        await self.client.run_until_disconnected()
-
+    # تسجيل معالج الرسائل
+    self.client.add_event_handler(
+        self.message_handler,
+        events.NewMessage(incoming=True)
+    )
+    
+    logger.info("👀 البوت جاهز للمراقبة والتحليل...")
+    
+    # البقاء في حالة تشغيل
+    await self.client.run_until_disconnected()
 
 async def main():
     bot = StudentHelpBot()
