@@ -204,12 +204,7 @@ class StudentHelpBot:
         password = os.getenv('TG_2FA_PASSWORD')  # For 2FA if enabled
         
         # Start the client with automatic code handling
-        await self.client.start(
-        phone=phone,
-        code_callback=lambda: code,
-        password=lambda: password if password else None
-    )
-    
+       await self.client.start(bot_token=Config.BOT_TOKEN)
         
         logger.info("🚀 بدء تشغيل البوت بنجاح!")
         
