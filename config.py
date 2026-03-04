@@ -23,7 +23,12 @@ class Config:
 
     @property
     def PHONE(self):
-        return os.getenv('PHONE', '')
+        return os.getenv('PHONE', '')  # اختياري الآن - قد لا تحتاجه
+    
+    # ✅ إضافة خاصية البوت توكن الجديدة
+    @property
+    def BOT_TOKEN(self):
+        return os.getenv('BOT_TOKEN', '')
     
     # إعدادات الجروب المستهدف - تم تغييرها إلى رابط دعوة
     @property
@@ -53,7 +58,9 @@ class Config:
     API_ID = int(os.getenv('API_ID', 0))
     API_HASH = os.getenv('API_HASH', '')
     PHONE = os.getenv('PHONE', '')
-    TARGET_GROUP_INVITE = os.getenv('TARGET_GROUP_INVITE', '')  # تغيير الاسم هنا
+    # ✅ إضافة متغير الكلاس للبوت توكن
+    BOT_TOKEN = os.getenv('BOT_TOKEN', '')
+    TARGET_GROUP_INVITE = os.getenv('TARGET_GROUP_INVITE', '')
 
     @classmethod
     def validate(cls):
@@ -61,8 +68,11 @@ class Config:
         # إعادة تحميل المتغيرات للتأكد من قراءتها من البيئة الحالية
         api_id = os.getenv('API_ID')
         api_hash = os.getenv('API_HASH')
-        phone = os.getenv('PHONE')
-        target_group_invite = os.getenv('TARGET_GROUP_INVITE')  # تغيير الاسم هنا
+        # ✅ PHONE أصبح اختيارياً الآن
+        phone = os.getenv('PHONE', '')
+        # ✅ إضافة التحقق من البوت توكن
+        bot_token = os.getenv('BOT_TOKEN')
+        target_group_invite = os.getenv('TARGET_GROUP_INVITE')
         
         errors = []
         
@@ -70,9 +80,11 @@ class Config:
             errors.append("API_ID مطلوب في ملف .env")
         if not api_hash:
             errors.append("API_HASH مطلوب في ملف .env")
-        if not phone:
-            errors.append("رقم الهاتف (PHONE) مطلوب في ملف .env")
-        if not target_group_invite:  # تغيير الشرط هنا - لم نعد نتحقق من '0' لأن النص لا يمكن أن يكون 0
+        # ✅ التحقق من وجود البوت توكن (مطلوب الآن)
+        if not bot_token:
+            errors.append("BOT_TOKEN مطلوب في ملف .env (يمكنك الحصول عليه من @BotFather)")
+        # ✅ PHONE أصبح اختيارياً - يمكن إزالته لاحقاً
+        if not target_group_invite:
             errors.append("رابط الدعوة (TARGET_GROUP_INVITE) مطلوب في ملف .env")
             
         if errors:
@@ -82,7 +94,9 @@ class Config:
         cls.API_ID = int(api_id)
         cls.API_HASH = api_hash
         cls.PHONE = phone
-        cls.TARGET_GROUP_INVITE = target_group_invite  # تغيير الاسم هنا - بدون int()
+        # ✅ إضافة البوت توكن
+        cls.BOT_TOKEN = bot_token
+        cls.TARGET_GROUP_INVITE = target_group_invite
         
         return True
         
@@ -92,8 +106,9 @@ class Config:
         print("\n" + "="*50)
         print("⚙️  إعدادات البوت")
         print("="*50)
-        print(f"📱 رقم الهاتف: {cls.PHONE}")
-        print(f"🔗 رابط الجروب المستهدف: {cls.TARGET_GROUP_INVITE}")  # تغيير النص هنا
+        # ✅ تعديل العرض - إظهار البوت توكن بدلاً من رقم الهاتف
+        print(f"🤖 حالة البوت: {'تم إعداد البوت توكن' if cls.BOT_TOKEN else '⚠️ البوت توكن غير مضبوط'}")
+        print(f"🔗 رابط الجروب المستهدف: {cls.TARGET_GROUP_INVITE}")
         print(f"⏱️  التأخير: {cls.MIN_DELAY} - {cls.MAX_DELAY} ثانية")
         print(f"📊 طول الرسالة: {cls.MIN_MESSAGE_LENGTH} - {cls.MAX_MESSAGE_LENGTH}")
         print(f"🔒 الحماية من الحظر: مفعلة")
