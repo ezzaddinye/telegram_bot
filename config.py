@@ -53,8 +53,8 @@ class Config:
     API_ID = int(os.getenv('API_ID', 0))
     API_HASH = os.getenv('API_HASH', '')
     PHONE = os.getenv('PHONE', '')
-   # TARGET_GROUP_ID = int(os.getenv('TARGET_GROUP_ID', 0))
-    TARGET_GROUP_INVITE = os.getenv('TARGET_GROUP_ID', '')
+    TARGET_GROUP_ID = int(os.getenv('TARGET_GROUP_ID', 0))
+    
 
     @classmethod
     def validate(cls):
