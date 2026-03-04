@@ -25,10 +25,10 @@ class Config:
     def PHONE(self):
         return os.getenv('PHONE', '')
     
-    # إعدادات الجروب المستهدف
+    # إعدادات الجروب المستهدف - تم تغييرها إلى رابط دعوة
     @property
-    def TARGET_GROUP_ID(self):
-        return int(os.getenv('TARGET_GROUP_ID', 0))
+    def TARGET_GROUP_INVITE(self):
+        return os.getenv('TARGET_GROUP_INVITE', '')
     
     # إعدادات التأخير (ثوانٍ)
     MIN_DELAY = float(os.getenv('MIN_DELAY', 0.5))
@@ -53,8 +53,7 @@ class Config:
     API_ID = int(os.getenv('API_ID', 0))
     API_HASH = os.getenv('API_HASH', '')
     PHONE = os.getenv('PHONE', '')
-    TARGET_GROUP_ID = int(os.getenv('TARGET_GROUP_ID', 0))
-    
+    TARGET_GROUP_INVITE = os.getenv('TARGET_GROUP_INVITE', '')  # تغيير الاسم هنا
 
     @classmethod
     def validate(cls):
@@ -63,7 +62,7 @@ class Config:
         api_id = os.getenv('API_ID')
         api_hash = os.getenv('API_HASH')
         phone = os.getenv('PHONE')
-        target_group_id = os.getenv('TARGET_GROUP_ID')
+        target_group_invite = os.getenv('TARGET_GROUP_INVITE')  # تغيير الاسم هنا
         
         errors = []
         
@@ -73,8 +72,8 @@ class Config:
             errors.append("API_HASH مطلوب في ملف .env")
         if not phone:
             errors.append("رقم الهاتف (PHONE) مطلوب في ملف .env")
-        if not target_group_id or target_group_id == '0':
-            errors.append("TARGET_GROUP_ID مطلوب في ملف .env")
+        if not target_group_invite:  # تغيير الشرط هنا - لم نعد نتحقق من '0' لأن النص لا يمكن أن يكون 0
+            errors.append("رابط الدعوة (TARGET_GROUP_INVITE) مطلوب في ملف .env")
             
         if errors:
             raise ValueError(f"❌ أخطاء في التكوين:\n" + "\n".join(f"  • {error}" for error in errors))
@@ -83,7 +82,7 @@ class Config:
         cls.API_ID = int(api_id)
         cls.API_HASH = api_hash
         cls.PHONE = phone
-        cls.TARGET_GROUP_ID = int(target_group_id)
+        cls.TARGET_GROUP_INVITE = target_group_invite  # تغيير الاسم هنا - بدون int()
         
         return True
         
@@ -94,7 +93,7 @@ class Config:
         print("⚙️  إعدادات البوت")
         print("="*50)
         print(f"📱 رقم الهاتف: {cls.PHONE}")
-        print(f"🎯 معرف الجروب المستهدف: {cls.TARGET_GROUP_ID}")
+        print(f"🔗 رابط الجروب المستهدف: {cls.TARGET_GROUP_INVITE}")  # تغيير النص هنا
         print(f"⏱️  التأخير: {cls.MIN_DELAY} - {cls.MAX_DELAY} ثانية")
         print(f"📊 طول الرسالة: {cls.MIN_MESSAGE_LENGTH} - {cls.MAX_MESSAGE_LENGTH}")
         print(f"🔒 الحماية من الحظر: مفعلة")
