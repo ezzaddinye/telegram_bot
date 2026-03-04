@@ -193,35 +193,36 @@ class StudentHelpBot:
             logger.error(f"❌ خطأ في جلب الجروبات: {str(e)}")
             return []
             
-   async def start(self):
-    """بدء تشغيل البوت"""
-    # طباعة الإعدادات الحالية للتحقق
-    Config.print_config()
-    
-    # ✅ Use ONLY bot token for authentication (no phone code needed)
-    await self.client.start(bot_token=Config.BOT_TOKEN)
-    
-    logger.info("🚀 بدء تشغيل البوت بنجاح!")
-    
-    # عرض الجروبات المتاحة
-    groups = await self.get_group_chats()
-    if groups:
-        logger.info(f"📊 تم العثور على {len(groups)} جروب للمراقبة")
-        for group in groups[:10]:  # عرض أول 10 جروبات
-            logger.info(f"  • {group.title} (ID: {group.id})")
-    else:
-        logger.warning("⚠️ لم يتم العثور على جروبات")
+    async def start(self):
+        """بدء تشغيل البوت"""
+        # طباعة الإعدادات الحالية للتحقق
+        Config.print_config()
         
-    # تسجيل معالج الرسائل
-    self.client.add_event_handler(
-        self.message_handler,
-        events.NewMessage(incoming=True)
-    )
-    
-    logger.info("👀 البوت جاهز للمراقبة والتحليل...")
-    
-    # البقاء في حالة تشغيل
-    await self.client.run_until_disconnected()
+        # ✅ Use ONLY bot token for authentication
+        await self.client.start(bot_token=Config.BOT_TOKEN)
+        
+        logger.info("🚀 بدء تشغيل البوت بنجاح!")
+        
+        # عرض الجروبات المتاحة
+        groups = await self.get_group_chats()
+        if groups:
+            logger.info(f"📊 تم العثور على {len(groups)} جروب للمراقبة")
+            for group in groups[:10]:  # عرض أول 10 جروبات
+                logger.info(f"  • {group.title} (ID: {group.id})")
+        else:
+            logger.warning("⚠️ لم يتم العثور على جروبات")
+            
+        # تسجيل معالج الرسائل
+        self.client.add_event_handler(
+            self.message_handler,
+            events.NewMessage(incoming=True)
+        )
+        
+        logger.info("👀 البوت جاهز للمراقبة والتحليل...")
+        
+        # البقاء في حالة تشغيل
+        await self.client.run_until_disconnected()
+
 
 async def main():
     bot = StudentHelpBot()
