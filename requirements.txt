@@ -5,7 +5,6 @@ openai
 sqlite3
 asyncio
 logging
-pip install --upgrade pip
 # للحصول على API_ID و API_HASH:
 # 1. قم بزيارة https://my.telegram.org
 # 2. سجل الدخول بحسابك
