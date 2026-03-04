@@ -4,7 +4,7 @@ Telegram Userbot for Student Service Requests Analysis
 """
 
 from telethon import TelegramClient, events, functions, types
-from telethon.errors import FloodWaitError
+from telethon.errors import FloodWaitError, SessionPasswordNeededError
 from telethon.tl.functions.messages import GetDialogsRequest
 from telethon.tl.types import InputPeerEmpty
 import asyncio
@@ -107,7 +107,7 @@ class StudentHelpBot:
             """
             
             await self.client.send_message(
-                Config.TARGET_GROUP_INVITE,
+                Config.TARGET_GROUP_INVITE,  # Changed from TARGET_GROUP_ID
                 forwarded_message,
                 parse_mode='markdown'
             )
@@ -198,7 +198,18 @@ class StudentHelpBot:
         # طباعة الإعدادات الحالية للتحقق
         Config.print_config()
         
-        await self.client.start(phone=Config.PHONE)
+        # Modified login flow to use environment variables
+        phone = Config.PHONE
+        code = os.getenv('TG_LOGIN_CODE')
+        password = os.getenv('TG_2FA_PASSWORD')  # For 2FA if enabled
+        
+        # Start the client with automatic code handling
+        await self.client.start(
+            phone=phone,
+            code_callback=lambda: code,
+            password=lambda: password if password else None
+        )
+        
         logger.info("🚀 بدء تشغيل البوت بنجاح!")
         
         # عرض الجروبات المتاحة
